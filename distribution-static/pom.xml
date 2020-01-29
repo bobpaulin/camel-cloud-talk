@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+      <groupId>com.bobpaulin.camel.cloud</groupId>
+      <artifactId>parent</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>distribution-static</artifactId>
+    <packaging>karaf-assembly</packaging>
+    <name>Distribution Static</name>
+    
+     <!-- Import Karaf POM to use the correct version of the Karaf dependencies -->
+    <dependencyManagement>
+    <dependencies>
+            <dependency>
+                <groupId>org.apache.karaf</groupId>
+                <artifactId>karaf</artifactId>
+                <version>${karaf.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+         <dependency>
+            <groupId>com.bobpaulin.camel.cloud</groupId>
+            <artifactId>provision-static</artifactId>
+            <version>${project.version}</version>
+            <type>kar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.karaf.features</groupId>
+            <artifactId>enterprise</artifactId>
+            <classifier>features</classifier>
+            <type>xml</type>
+            <version>${karaf.version}</version>
+        </dependency>   
+        <dependency>
+            <groupId>org.apache.karaf.features</groupId>
+            <artifactId>spring</artifactId>
+            <version>${karaf.version}</version>
+            <classifier>features</classifier>
+            <type>xml</type>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.karaf.features</groupId>
+            <artifactId>static</artifactId>
+            <type>kar</type>
+            <version>${karaf.version}</version>
+        </dependency>
+ 
+        <dependency>
+            <groupId>org.apache.karaf.services</groupId>
+            <artifactId>org.apache.karaf.services.staticcm</artifactId>
+            <version>${karaf.version}</version>
+        </dependency>
+        <dependency>
+        <!-- scope is runtime so the feature repo is listed in etc/org.apache.karaf.features.cfg file, and features will installed into the system directory -->
+            <groupId>org.apache.karaf.features</groupId>
+            <artifactId>standard</artifactId>
+            <classifier>features</classifier>
+            <version>${karaf.version}</version>
+            <type>xml</type>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <!-- if you want to include resources in the distribution -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/filtered-resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <plugins>
+            <!-- if you want to include resources in the distribution -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <id>process-resources</id>
+                        <goals>
+                            <goal>resources</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- karaf-maven-plugin will call both assembly and archive goals -->
+            <plugin>
+                <groupId>org.apache.karaf.tooling</groupId>
+                <artifactId>karaf-maven-plugin</artifactId>
+                <version>${karaf.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <!-- ignoreDependencyFlag is true forces plugin to also
+                         download feature dependent libraries -->
+                    <ignoreDependencyFlag>false</ignoreDependencyFlag>
+                    <startupFeatures>
+                    	<startupFeature>static-framework</startupFeature>
+                    	<startupFeature>eventadmin</startupFeature>
+                        <startupFeature>shell</startupFeature>
+                        <startupFeature>scr</startupFeature>
+                        <startupFeature>provision-static</startupFeature>
+                    </startupFeatures>
+                    <framework>static</framework>
+                    <useReferenceUrls>true</useReferenceUrls>
+                    <environment>static</environment>
+                    <libraries>
+                    </libraries>
+                    <javase>1.8</javase>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
