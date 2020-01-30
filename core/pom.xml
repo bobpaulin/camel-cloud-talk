@@ -7,7 +7,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../parent</relativePath>
 	</parent>
-	<artifactId>message-producer</artifactId>
+	<artifactId>core</artifactId>
 	<packaging>bundle</packaging>
 
 
@@ -26,11 +26,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-activemq</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-aws-sqs</artifactId>
+			<artifactId>camel-osgi-activator</artifactId>
 		</dependency>
 		<dependency>
 		    <groupId>org.slf4j</groupId>
@@ -47,42 +43,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<profiles>
-		<profile>
-			<id>uber</id>
-			<build>
-				<plugins>
-					<!-- Maven Assembly Plugin -->
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<configuration>
-							<!-- get all project dependencies -->
-							<descriptorRefs>
-								<descriptorRef>jar-with-dependencies</descriptorRef>
-							</descriptorRefs>
-							<!-- MainClass in mainfest make a executable jar -->
-							<archive>
-								<manifest>
-									<mainClass>com.bobpaulin.camel.cloud.internal.ProducerMain</mainClass>
-								</manifest>
-							</archive>
-						</configuration>
-						<executions>
-							<execution>
-								<id>make-assembly</id>
-								<!-- bind to the packaging phase -->
-								<phase>package</phase>
-								<goals>
-									<goal>single</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 
 </project>

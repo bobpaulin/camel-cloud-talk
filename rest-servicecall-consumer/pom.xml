@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-    <parent>
-    	<groupId>com.bobpaulin.camel.cloud</groupId>
-    	<artifactId>parent</artifactId>
-    	<version>0.0.1-SNAPSHOT</version>
-    	<relativePath>../parent</relativePath>
-    </parent>
-    <artifactId>message-consumer</artifactId>
-    <packaging>bundle</packaging>
-    
-    
-    <dependencies>
-    	<dependency>
+	<parent>
+		<groupId>com.bobpaulin.camel.cloud</groupId>
+		<artifactId>parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../parent</relativePath>
+	</parent>
+	<artifactId>rest-servicecall-consumer</artifactId>
+	<packaging>bundle</packaging>
+
+
+	<dependencies>
+		<dependency>
 			<groupId>org.osgi</groupId>
 			<artifactId>org.osgi.core</artifactId>
 		</dependency>
@@ -20,35 +20,43 @@
 			<groupId>org.osgi</groupId>
 			<artifactId>org.osgi.compendium</artifactId>
 		</dependency>
-    	<dependency>
+		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-core</artifactId>
 		</dependency>
-    	<dependency>
-    		<groupId>org.apache.camel</groupId>
-    		<artifactId>camel-activemq</artifactId>
-    	</dependency>
-    	<dependency>
+		<dependency>
 			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-aws-sqs</artifactId>
+			<artifactId>camel-main</artifactId>
 		</dependency>
-    	<dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-netty-http</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-http</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-consul</artifactId>
+		</dependency>
+		<dependency>
 		    <groupId>org.slf4j</groupId>
 		    <artifactId>slf4j-log4j12</artifactId>
 		</dependency>
-    </dependencies>
-    
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <extensions>true</extensions>
-            </plugin>
-        </plugins>
-    </build>
-    
-    <profiles>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<profiles>
 		<profile>
 			<id>uber</id>
 			<build>
@@ -65,7 +73,7 @@
 							<!-- MainClass in mainfest make a executable jar -->
 							<archive>
 								<manifest>
-									<mainClass>com.bobpaulin.camel.cloud.internal.ConsumerMain</mainClass>
+									<mainClass>com.bobpaulin.camel.cloud.servicecall.consumer.internal.ServiceCallMain</mainClass>
 								</manifest>
 							</archive>
 						</configuration>
@@ -84,5 +92,5 @@
 			</build>
 		</profile>
 	</profiles>
-    
+
 </project>

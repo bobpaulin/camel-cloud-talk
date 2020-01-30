@@ -3,6 +3,8 @@ package com.bobpaulin.camel.cloud.internal;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.camel.main.Main;
 
+import com.amazonaws.services.sqs.AmazonSQS;
+import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.bobpaulin.camel.cloud.consumer.ConsumerRouteBuilder;
 
 public class ConsumerMain {
@@ -15,13 +17,10 @@ public class ConsumerMain {
 		ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://0.0.0.0:61616");
 		connectionFactory.setUserName("karaf");
 		connectionFactory.setPassword("karaf");
-		//AmazonSQS client = AmazonSQSClientBuilder.defaultClient();
+		AmazonSQS client = AmazonSQSClientBuilder.defaultClient();
 		main.bind("connectionFactory", connectionFactory);
-		//main.bind("client", client);
-		main.start();
-		
-		System.in.read();
-		main.close();
+		main.bind("client", client);
+		main.run(args);
 		
 	}
 }
