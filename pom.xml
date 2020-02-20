@@ -14,6 +14,7 @@
 		<module>rest-servicecall-consumer</module>
 		<module>message-consumer</module>
 		<module>message-producer</module>
+		<module>global-circuit-breaker</module>
 		<module>provision-static</module>
 		<module>distribution-static</module>
 	</modules>

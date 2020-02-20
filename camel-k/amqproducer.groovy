@@ -9,5 +9,5 @@ beans {
 from('timer:js?period=1s')
     .routeId('js')
     .setBody()
-        .simple('Hello Camel K')
+        .simple('Hello Camel-K')
     .to('activemq:testAsynch?connectionFactory=#connectionFactory')

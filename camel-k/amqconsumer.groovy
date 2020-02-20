@@ -7,4 +7,4 @@ beans {
 }
 
 from('activemq:testAsynch?connectionFactory=#connectionFactory')
-    .log('Hello Camel K')
+    .log('${body}')

@@ -10,6 +10,9 @@
         <feature version='${camel.version}'>camel-aws-sqs</feature>
         <feature version='${camel.version}'>camel-activemq</feature>
         <feature version='${camel.version}'>camel-consul</feature>
+        <feature version='${camel.version}'>camel-hystrix</feature>
+        <feature version='${camel.version}'>camel-hazelcast</feature>
+        <bundle start-level='60' dependency='true'>mvn:org.hdrhistogram/HdrHistogram/2.1.10</bundle>
         <bundle start-level="60">mvn:org.apache.camel/camel-core-osgi/${camel.version}</bundle>
         <bundle start-level="60">mvn:org.apache.camel/camel-osgi-activator/${camel.version}</bundle>
         <feature>webconsole</feature>
@@ -17,5 +20,6 @@
 		<bundle start-level="80">mvn:com.bobpaulin.camel.cloud/rest-servicecall-consumer/${project.version}</bundle>
         <bundle start-level="80">mvn:com.bobpaulin.camel.cloud/message-producer/${project.version}</bundle>
         <bundle start-level="80">mvn:com.bobpaulin.camel.cloud/message-consumer/${project.version}</bundle>
+        <bundle start-level="80">mvn:com.bobpaulin.camel.cloud/global-circuit-breaker/${project.version}</bundle>
     </feature>
 </features>
