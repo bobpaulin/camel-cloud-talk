@@ -1,15 +1,8 @@
 package com.bobpaulin.camel.cloud.circuit;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.camel.builder.AggregationStrategies;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.consul.ConsulConstants;
 import org.apache.camel.component.consul.endpoint.ConsulKeyValueActions;
-import org.apache.camel.component.hazelcast.HazelcastConstants;
-import org.apache.camel.component.hazelcast.HazelcastOperation;
 import org.apache.camel.spi.CircuitBreakerConstants;
 import org.osgi.service.component.annotations.Component;
 
@@ -20,12 +13,6 @@ public class GlobalCircuitRouteBuilder extends RouteBuilder {
 	
 	@Override
 	public void configure() throws Exception {
-		
-		
-		
-		
-			
-		
 		
 		from("direct:killSwitchPath1")
 			.filter(exchangeProperty("featureToggles/featureToggle").isEqualTo("true"))
@@ -58,7 +45,7 @@ public class GlobalCircuitRouteBuilder extends RouteBuilder {
 			.circuitBreaker()
 	    	.hystrixConfiguration()
 	    		.circuitBreakerErrorThresholdPercentage(20)
-	    		.metricsRollingPercentileWindowInMilliseconds(60000)
+	    		.metricsRollingPercentileWindowInMilliseconds(10000)
 	    	.end()
 	        .to("direct:test-lb")
 	    .onFallback()
@@ -70,7 +57,7 @@ public class GlobalCircuitRouteBuilder extends RouteBuilder {
 			.circuitBreaker()
 		    	.hystrixConfiguration()
 		    		.circuitBreakerErrorThresholdPercentage(20)
-		    		.metricsRollingPercentileWindowInMilliseconds(60000)
+		    		.metricsRollingPercentileWindowInMilliseconds(10000)
 		    	.end()
 		        .to("direct:test-lb")
 		    .onFallback()
@@ -82,7 +69,7 @@ public class GlobalCircuitRouteBuilder extends RouteBuilder {
 			.circuitBreaker()
 		    	.hystrixConfiguration()
 		    		.circuitBreakerErrorThresholdPercentage(20)
-		    		.metricsRollingPercentileWindowInMilliseconds(60000)
+		    		.metricsRollingPercentileWindowInMilliseconds(10000)
 		    	.end()
 		        .to("direct:test-lb")
 		    .onFallback()
@@ -92,8 +79,8 @@ public class GlobalCircuitRouteBuilder extends RouteBuilder {
 		
 		from("direct:test-lb")
 			.loadBalance().roundRobin()
-				.to("https://bobpaulin.com?bridgeEndpoint=true")
-				.to("https://bobpaulin.com/test?bridgeEndpoint=true")
+				.to("http://localhost:8080/camel-cloud-talk/api/slow?bridgeEndpoint=true")
+				.to("http://localhost:8080/camel-cloud-talk/api/fast?bridgeEndpoint=true")
 			.end();
 		
 		from("direct:globalKillSwitch")
@@ -101,6 +88,16 @@ public class GlobalCircuitRouteBuilder extends RouteBuilder {
 			.setHeader(ConsulConstants.CONSUL_ACTION, constant(ConsulKeyValueActions.PUT))
 			.setHeader(ConsulConstants.CONSUL_KEY, constant("featureToggles/featureToggle"))
 			.to("consul://kv");
+		
+		from("direct:slow")
+			.process(exchange -> {
+				Thread.currentThread().sleep(2000);
+			});
+		
+		from("direct:fast")
+		.process(exchange -> {
+			Thread.currentThread().sleep(100);
+		});
 		
 	}
 }

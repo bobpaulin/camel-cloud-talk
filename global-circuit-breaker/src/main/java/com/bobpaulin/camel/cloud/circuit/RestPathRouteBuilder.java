@@ -47,7 +47,7 @@ public class RestPathRouteBuilder extends RouteBuilder {
 			})
 			.setBody(exchangeProperty("tempBody"));
 		
-		rest("api")
+		rest("api/circuit")
 			.get("path1")
 				.to("direct:circuitBreaker1")
 			.get("path2")
@@ -55,5 +55,18 @@ public class RestPathRouteBuilder extends RouteBuilder {
 			.get("path3")
 				.to("direct:circuitBreaker3");
 		
+		rest("api/toggle")
+			.get("path1")
+				.to("direct:killSwitchPath1")
+			.get("path2")
+				.to("direct:killSwitchPath2")
+			.get("path3")
+				.to("direct:killSwitchPath3");
+		
+		rest("api")
+			.get("slow")
+				.to("direct:slow")
+			.get("fast")
+				.to("direct:fast");
 	}
 }
