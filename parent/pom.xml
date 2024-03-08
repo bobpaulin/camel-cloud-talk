@@ -12,7 +12,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<camel.version>3.1.0-SNAPSHOT</camel.version>
+		<camel.version>3.21.4</camel.version>
 		<karaf.version>4.2.8</karaf.version>
 		<activemq.version>5.14.5</activemq.version>
 		<osgi.version>6.0.0</osgi.version>
